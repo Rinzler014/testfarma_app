@@ -1,0 +1,93 @@
+{% include "layouts/dash_navbar.html"%}
+<!--  -->
+{% load crispy_forms_filters %}
+<!--  -->
+{% block content %}
+<!--  -->
+{% load static %}
+<!--  -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{% static 'styles/profile.css' %}" />
+  <title>Profile</title>
+</head>
+
+<body>
+
+    
+
+    <div class="container_s">
+        <div class="column column1"> 
+          <div class="contenedor">
+            <img class="img-paciente" src="{% static 'assets/images/paciente.png' %}" alt="patient">
+            <h1 class="usernametext">{{ user.first_name }} {{ user.last_name }}</h1>
+          </div>
+        </div>
+
+        <div class="column column2">
+          <div class="form-group">
+            <label for="lname" style="text-align: center;"><h3>Editar Contraseña</h3></label>
+            <form method="POST">
+              {% csrf_token %}
+
+              {{ form.old_password|as_crispy_field }}
+              {{ form.new_password1|as_crispy_field }}
+              {{ form.new_password2|as_crispy_field }}
+
+              <button class = "btn btn-warning" style="width: 100%;">Guardar</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="column column3">
+
+          <form>
+            <div class="form-group">
+              <label for="fname"><h1 style="font-size: 30pt;">Mi Información</h1></label>
+              <br><br>
+              <label for="fname"><h3>Correo Electronico</h3></label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="fname" name="fname" value="{{ user.email}}" disabled>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="lname"><h3>Estado de Residencia</h3></label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="fname" name="fname" value="{{ user.state }}" disabled>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="lname"><h3>Municipio de Residencia</h3></label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="fname" name="fname" value="{{ user.town }}" disabled>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="fname"><h3>Fecha de nacimiento</h3></label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="fname" name="fname" value="{{ user.birth_date|date:'d/m/Y' }}" disabled>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="lname"><h3>Genero</h3></label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="lname" name="lname" value="{% if user.gender == 'M' %} Masculino {% else %}  Femenino {% endif %}" disabled>
+              </div>
+            </div>
+          </form>
+          
+
+          
+        </div>
+
+      </div>
+</body>
+</html>
+
+{% endblock %}

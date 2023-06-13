@@ -1,0 +1,161 @@
+{% include "layouts/dash_navbar.html"%}
+<!--  -->
+{% load crispy_forms_filters %}
+<!--  -->
+{% block content %}
+<!--  -->
+{% load static %}
+<!--  -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'styles/appointments.css' %}" />
+    <title>Agendar Estudio</title>
+  </head>
+  <body>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="appointmentCancelModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header border-0">
+            <h1 class="modal-title fs-5 title" id="appointmentCancel">
+              ¿Estás seguro que deseas eliminar esta cita?
+            </h1>
+          </div>
+          <div class="modal-body border-0">
+            <p>Servicio: servicio</p>
+            <p>Dirección: direccion_laboratorio</p>
+            <p>Fecha: fecha</p>
+            <p>Hora: hora</p>
+          </div>
+          <div class="modal-footer border-0">
+            <button
+              type="button"
+              class="btn modal-left"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button
+              type="button"
+              class="btn modal-right"
+              id="modal-delete-button"
+            >
+              Eliminar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid appointments h-100 align-items-center">
+      <div class="row d-flex justify-content-around">
+        <div class="col col-md-4 appointments">
+          <div class="row">
+            <div class="col title"><p>Agendar Cita</p></div>
+          </div>
+          <div class="row studies">
+            <form method="POST" id="reg_form" data-towns-url="{% url 'ajax_load_towns' %}">
+              {% csrf_token %}
+
+              <div class="mb-3">
+                {{ form.state|as_crispy_field }}
+              </div>
+
+              <div class="mb-3">
+                {{ form.town|as_crispy_field }}
+              </div>
+
+              <div class="mb-3">
+                {{ form.study|as_crispy_field }}
+              </div>
+          
+              <div class="mb-3">
+                {{ form.date|as_crispy_field }}
+              </div>
+
+              <div class="mb-3 cs-form">
+                {{ form.hour|as_crispy_field }}
+              </div>
+
+            
+          </div>
+
+              <button id="agendarButton" class="btn btn-left" onclick="return confirm('Desea Agendar la Cita?')">
+                Agendar
+              </button>
+            
+            </form> 
+          
+        </div>
+        <div class="col col-md-7 appointments">
+          <div class="row">
+            <div class="col title"><p>Citas Agendadas</p></div>
+          </div>
+          <div class="row dates">
+            
+              <div class="card cards_container">
+
+                {% for appointment in appointments %}
+
+              
+                  <div class ="appointment">
+                    <div class="card-body" id="card-1" onclick="">
+                      <h5 class="card-title">{{ appointment.study.name }}</h5>
+                      <p class="card-text">Sucursal: {{ appointment.place }}</p>
+                      <p class="card-text">Fecha: {{ appointment.date }}</p><p class="card-text">Hora: {{ appointment.hour }}</p>
+                    </div>
+                    
+                    <button onclick="delete_appointment('{{ appointment.id }}')" class="btn btn-danger" style="margin-bottom: 12px;">Cancelar Cita</button>
+                  </div>
+                
+                {% endfor %}
+
+              </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+
+      $("#id_state").change(function () {
+        var url = $("#reg_form").attr("data-towns-url");  // get the url of the `load_cities` view
+        var stateId = $(this).val();  // get the selected country ID from the HTML input
+
+        $.ajax({                       // initialize an AJAX request
+            url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+            data: {
+            'state': stateId       // add the country id to the GET parameters
+            },
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+            $("#id_town").html(data);  // replace the contents of the city input with the data that came from the server
+            },
+            error: function (data) {
+              alert("Por favor selecciona un estado");
+            }
+        });
+      });
+
+      function delete_appointment(id_appointment) {
+
+        confirm("¿Estás seguro que deseas eliminar esta cita?") ? document.location.href = "{% url 'delete_appointment' id_appointment='tmp' %}".replace('tmp', id_appointment) : false
+        
+
+      }
+
+    </script>
+  </body>
+</html>
+
+{% endblock %}

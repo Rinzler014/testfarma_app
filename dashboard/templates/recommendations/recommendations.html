@@ -1,0 +1,189 @@
+{% include "layouts/dash_navbar.html"%}
+<!--  -->
+{% load crispy_forms_filters %}
+<!--  -->
+{% block content %}
+<!--  -->
+{% load static %}
+<!--  -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'styles/recommendations.css' %}" />
+    <title>Agendar Estudio</title>
+  </head>
+  <body>
+
+    {% for study_modal in studies %}
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="studyModal-{{ forloop.counter }}"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header border-0">
+            <h1 class="modal-title fs-5 title" id="exampleModalLabel">
+              ¿Deseas Agendar este estudio?
+            </h1>
+          </div>
+          <div class="modal-body border-0">
+            <p style="text-align: center; margin: 0;">{{ study_modal }}</p>
+          </div>
+          <p style="text-align: center; font-weight: 500;">Serás redirigido a la pagina de citas para confirmar fecha y hora</p>
+          <div class="modal-footer border-0">
+            <button
+              type="button"
+              class="btn modal-left"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button
+              type="button"
+              class="btn modal-left"
+              id="modal-delete-button"
+            >
+              Borrar
+            </button>
+            <button
+              type="button"
+              class="btn modal-right"
+              data-bs-dismiss="modal"
+              onclick="link_to_appointment('{{ study_modal.code }}', '{{ user.town }}', '{{ user.state}}')"
+            >
+              Agendar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal -->
+
+    {% endfor %}
+
+    <div class="container-fluid appointments h-100 align-items-center">
+      <div class="row d-flex justify-content-around">
+        <div class="col col-md-4 appointments">
+          <div class="row">
+            <div class="col title"><p>Buscar Estudios Recomendados</p></div>
+          </div>
+          <div class="row studies">
+            <form method="POST" id="rec_form">
+              {% csrf_token %}
+              <div class="mb-3">
+                {{ form.height }}
+              </div>
+              <div class="mb-3">
+                {{ form.weight }}
+              </div>
+
+              <button class="btn btn-left">Buscar</button>
+
+            </form>
+          </div>
+        </div>
+        <div class="col col-md-7 appointments">
+          <div class="row">
+            <div class="col title"><p>Estudios Recomendados</p></div>
+          </div>
+
+          <div class="row dates">
+            <div class="card">
+
+              {% if studies %}
+
+                {% for study in studies %}
+
+                  <div class="card-body" id="card-{{ forloop.counter }}" onclick="deleteCard('card-{{ forloop.counter }}', 'studyModal-{{ forloop.counter }}')">
+                    <h5 class="card-title">{{ study }}</h5>
+                    <p class="card-text"><b>Descripcion:</b> {{ study.description }}</p>
+                    <button
+                      type="submit"
+                      class="btn btn-right"
+                      data-bs-toggle="modal"
+                      data-bs-target="#studyModal-{{ forloop.counter }}"
+                      onclick="deleteCard('card-{{ forloop.counter }}', 'studyModal-{{ forloop.counter }}')"
+                    >
+                      <i class="bi bi-calendar"></i>
+                      &nbsp;Opciones
+                    </button>
+                  </div>
+
+                {% endfor %}
+                
+              {% else %}
+
+                <div>
+                  <p>No hay estudios recomendados</p>
+                </div>
+
+              {% endif %}
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      function deleteCard(cardId, modalId) {
+        var modal = document.getElementById(modalId);
+        var deleteButton = document.getElementById("modal-delete-button");
+
+        // Create a new function for deleting the card
+        var deleteCardHandler = function () {
+          var card = document.getElementById(cardId);
+          if (card) {
+            card.remove(); // Remove the card element
+          }
+          // Close the modal and remove the backdrop using jQuery
+          $(modal).modal("hide");
+          $(".modal-backdrop").remove();
+
+          // Remove the event listener from the delete button
+          deleteButton.removeEventListener("click", deleteCardHandler);
+        };
+
+        // Add the event listener to the delete button
+        deleteButton.addEventListener("click", deleteCardHandler);
+
+        // Show the modal using jQuery
+        $(modal).modal("show");
+      }
+
+      function link_to_appointment(code, town, state) {
+      
+        $.ajax({           // initialize an AJAX request
+            url: "{% url 'recommended_appointment' %}", // set the url of the request
+            data: {
+              'code': code,       // add the country id to the GET parameters
+              'state': state,
+              'town': town,
+            },
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+              
+              console.log("Data sent")
+              window.location.href = "{% url 'appointments' %}";
+
+            },
+            error: function (data) {
+              alert("An error occurred while sending the data");
+            }
+        });
+      
+      }
+
+    </script>
+  </body>
+</html>
+
+{% endblock %}
