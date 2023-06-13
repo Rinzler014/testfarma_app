@@ -7,3 +7,4 @@ crispy-bootstrap5
 scikit-learn
 pandas
 numpy
+gunicorn
