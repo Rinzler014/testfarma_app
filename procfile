@@ -1,1 +1,2 @@
 web: gunicorn testfarma.wsgi
+heroku ps:scale web=1
