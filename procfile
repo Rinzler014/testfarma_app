@@ -1,2 +1,1 @@
-web: gunicorn testfarma.wsgi
-heroku ps:scale web=1
+web: gunicorn testfarma.wsgi --log-file -
