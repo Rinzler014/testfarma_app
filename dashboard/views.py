@@ -16,6 +16,8 @@ from utils import *
 Model_H, Model_M = pickle.load(open("TestFarma_Model_HW.p", "rb"))
 db = get_db_handle("testfarma")
 
+print(get_db_handle("testfarma"))
+
 # Create your views here.
 
 
