@@ -1,8 +1,10 @@
 from pymongo import MongoClient
 
 def get_db_handle(db_name):
-    client = MongoClient("mongodb://localhost:27017")
+    client = MongoClient("mongodb+srv://TESTFARMATST:3czzys7FtN6XysKr@testfarmatst.crr3uq1.mongodb.net/?retryWrites=true&w=majority")
 
     db = client[db_name]
 
     return db
+
+
