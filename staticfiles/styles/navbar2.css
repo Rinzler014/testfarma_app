@@ -110,8 +110,9 @@ header {
   top: 60px;
   height: 0;
   width: 300px;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(253, 253, 6, 0.571);
   backdrop-filter: blur(15px);
+  transform: translate3d(0, 0, 0);
   border-radius: 10px;
   overflow: hidden;
   transition: height 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
