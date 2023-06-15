@@ -16,8 +16,6 @@ from utils import *
 Model_H, Model_M = pickle.load(open("TestFarma_Model_HW.p", "rb"))
 db = get_db_handle("testfarma")
 
-print(get_db_handle("testfarma"))
-
 # Create your views here.
 
 
@@ -32,6 +30,8 @@ def recommendations(request):
     form = RecommendationsForm()
     
     user_data = db.medic_data.find_one({"_id" : request.user.id})
+    print(user_data)
+    print(request.user.gender)
 
     context = {"form": form}
 
@@ -51,7 +51,7 @@ def recommendations(request):
             
             variables = np.asarray([weight, height]).reshape(1, -1)
             
-            if request.user.gender == "M":
+            if request.user.gender == "F":
                 
                 print("Mujer")
                 probability = str(np.max(Model_M.predict_proba(variables)))
