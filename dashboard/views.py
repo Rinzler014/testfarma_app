@@ -50,12 +50,14 @@ def recommendations(request):
             
             variables = np.asarray([weight, height]).reshape(1, -1)
             
+            print(request.user.gender)
+            
             if request.user.gender == "F":
                 
                 print("Mujer")
                 probability = str(np.max(Model_M.predict_proba(variables)))
             
-            elif request.user.gender == "H":
+            elif request.user.gender == "M":
                 
                 print("Hombre")
                 probability = str(np.max(Model_H.predict_proba(variables)))
