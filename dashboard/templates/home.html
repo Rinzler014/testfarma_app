@@ -21,13 +21,24 @@
     <!-- CAtegories Section Starts Here -->
     <section class="categories"style="background-color:rgba(255, 249, 236, 1); height: 100%;">
         <div class="container">
-            <h1 class="text-center">Bienvenido de nuevo {{ user.first_name }} !</h1>
+
+            {% if user.gender == "F" %}
+
+                <h1 class="text-center">Bienvenida de nuevo {{ user.first_name }} !</h1>
+
+            {% else %}
+
+                <h1 class="text-center">Bienvenido de nuevo {{ user.first_name }} !</h1>
+
+            {% endif %}
+
+           
 
             <div class="box-3 float-container">
                 <img src="https://img1.wsimg.com/isteam/stock/Ddj9aVd/:/rs=w:600,h:300,cg:true,m/cr=w:600,h:600" alt="Pizza" class="img-responsive img-curve">
 
                 <h2 class="cube-text">Recomendacion #1</h2>
-                <h4 class="cube-text2">Mas Informacion→</h4>
+                <h4 class="cube-text2"><i>La fibra de los alimentos y los probióticos ayudan a regular el funcionamiento intestinal</i></h4>
             </div>
             </a>
 
@@ -35,7 +46,7 @@
                 <img src="https://img1.wsimg.com/isteam/stock/Ddj9aVd/:/rs=w:600,h:300,cg:true,m/cr=w:600,h:600" alt="Burger" class="img-responsive img-curve">
 
                 <h2 class="cube-text">Recomendacion #2</h2>
-                <h4 class="cube-text2">Mas Informacion →</h4>
+                <h4 class="cube-text2"><i>Hidratate bien durante el día, toma al menos 2 litros de agua diarios</i></h4>
             </div>
             </a>
 
@@ -43,7 +54,7 @@
                 <img src="https://img1.wsimg.com/isteam/stock/Ddj9aVd/:/rs=w:600,h:300,cg:true,m/cr=w:600,h:600" alt="Momo" class="img-responsive img-curve">
 
                 <h2 class="cube-text">Recomendacion #3</h2>
-                <h4 class="cube-text2">Mas informacion →</h4>
+                <h4 class="cube-text2"><i>Haz actividad física regularmente</i></h4>
             </div>
             </a>
 

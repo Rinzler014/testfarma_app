@@ -185,10 +185,8 @@ class UserCreationForm(UserCreationForm):
         ),
     )
     
-    state = forms.ModelChoiceField( required = True, 
-                                   empty_label="Estado de Residencia",
+    state = forms.CharField( required = True, 
                                     label = "",
-                                    queryset = State.objects.all(),
                                     error_messages={
                                         "required": "No puede estar vacío",
                                     },
@@ -197,10 +195,8 @@ class UserCreationForm(UserCreationForm):
                                         }
                                     ))
     
-    town = forms.ModelChoiceField( required = True, 
+    town = forms.CharField( required = True, 
                                     label = "",
-                                    empty_label="Municipio",
-                                    queryset = Town.objects.all(),
                                     error_messages={
                                         "required": "No puede estar vacío",
                                     },
@@ -282,6 +278,8 @@ class UserCreationForm(UserCreationForm):
             last_name=self.cleaned_data["last_name"],
             mom_last_name=self.cleaned_data["mom_last_name"],
             birth_date=self.cleaned_data["birth_date"],
+            state=self.cleaned_data["state"],
+            town=self.cleaned_data["town"],
             gender=self.cleaned_data["gender"],
             user_type=self.cleaned_data["user_type"],
         )

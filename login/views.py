@@ -91,6 +91,9 @@ def register_part_two(request):
         updated_request.update(data)
 
         form = UserCreationForm(updated_request)
+        
+        print(form.is_valid())
+        print(form.errors)
 
         if form.is_valid():
             data = form.cleaned_data
