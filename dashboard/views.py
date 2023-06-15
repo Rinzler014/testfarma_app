@@ -29,9 +29,8 @@ def recommendations(request):
     
     form = RecommendationsForm()
     
-    user_data = db.medic_data.find_one({"_id" : request.user.id})
+    user_data = db.medic_data.find_one({"id" : request.user.id})
     print(user_data)
-    print(request.user.gender)
 
     context = {"form": form}
 

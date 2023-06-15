@@ -100,8 +100,9 @@
               {{ form.user_type }}
             </div>
 
-            <div class="btn-sig">
+            <div class="btn-sig" style="gap: 10px;">
               <button class="next-btn" type="submit">Siguiente</button>
+              <button class="next-btn" type="button" onclick="link_to_view()">Regresar</button>
             </div>
           </div>
         </form>
@@ -111,6 +112,7 @@
 
     <script>
       function link_to_view() {
+        
         window.location.href = "{% url 'login' %}";
       }
 

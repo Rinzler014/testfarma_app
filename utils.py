@@ -17,9 +17,25 @@ def get_db_handle(db_name):
         print(e)
         
         return None
-
     
 
+# db = get_db_handle("testfarma")
 
+# collection = db["medic_data"]
+
+# documents = collection.find()
+
+# new_id = 1
+
+# for document in documents:
+    
+#     print(new_id)
+#     # Actualizar el valor del ID en el documento
+#     collection.update_one({'_id': document['_id']}, {'$set': {'id': new_id}})
+    
+#     # Incrementar el contador del nuevo ID
+#     new_id += 1
+
+# print("¡La actualización de los IDs ha sido completada!")
 
 
